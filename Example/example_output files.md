@@ -35,4 +35,6 @@ However, they contain only the significant differentially expressed genes (DEGs)
    | Downregulated genes    |   347 |
 
    
-![Representative DESeq2 Output](demo.png)
+4. Examplar plots (PCA_Plot.R, Volcano_Plot.R, MA_Plot.R, 04_Top_DEGs_Heatmap.R)
+   
+  ![Representative DESeq2 Output](demo.png)
