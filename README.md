@@ -1,6 +1,6 @@
 # DESeq2-Differential-Expression-Analysis
 Differential expression analysis of RNA seq. data using DESeq2 in R with Salmon gene count estimates, including data preprocessing, statistical analysis, visualization and result interpretation.
-...............................................................................................................................................................................................
+.............................................................................................................................................................................................
 ## Overview
 This repository provides a complete workflow for bulk RNA-seq differential expression analysis using the DESeq2 package in R. The workflow starts from Salmon quantification outputs (quant.sf), which are imported into R using tximport to generate gene-level count estimates for differential expression analysis.
 
@@ -28,7 +28,7 @@ The workflow consists of the following steps:
 
 1.Import Salmon quantification outputs using tximport.
 2.Convert transcript-level abundance estimates into gene-level count estimates.
-  (The tximport package reads the quant.sf files from all samples and combines them into a single object. A transcript-to-gene mapping table, called tx2gene, is also supplied.)
+  (The tximport package reads the quant.sf files from all samples and combines them into a single object. A transcript-to-gene mapping table called tx2gene, is also supplied.)
 3.Import sample metadata.
 4.Create the DESeq2 dataset.
 5.Estimate size factors for normalization.
