@@ -35,3 +35,4 @@ However, they contain only the significant differentially expressed genes (DEGs)
    | Downregulated genes    |   347 |
 
    
+![Representative DESeq2 Output](demo.png)
