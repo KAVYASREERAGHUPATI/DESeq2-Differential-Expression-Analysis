@@ -1,6 +1,6 @@
-# ============================================================
+
 # COMPLETE SALMON + GTF + TXIMPORT + DESEQ2 ANALYSIS
-# ============================================================
+
 # This script:
 # 1. Installs required packages
 # 2. Imports sample metadata
@@ -13,13 +13,10 @@
 # 9. Exports all result tables
 #
 # Plotting is intentionally not included.
-# ============================================================
 
 
-# ============================================================
+
 # 1. INSTALL REQUIRED PACKAGES
-# ============================================================
-
 cran_packages <- c(
   "readr",
   "dplyr",
@@ -53,9 +50,8 @@ for (pkg in bioconductor_packages) {
 }
 
 
-# ============================================================
+
 # 2. LOAD PACKAGES
-# ============================================================
 
 suppressPackageStartupMessages({
   library(readr)
@@ -67,9 +63,8 @@ suppressPackageStartupMessages({
 })
 
 
-# ============================================================
+
 # 3. USER SETTINGS
-# ============================================================
 
 # Change this path to your main project folder.
 
@@ -161,9 +156,9 @@ if (!dir.exists(salmon_folder)) {
 }
 
 
-# ============================================================
+
 # 5. IMPORT SAMPLE METADATA
-# ============================================================
+
 
 metadata <- read_csv(
   metadata_file,
@@ -243,9 +238,9 @@ if (!treatment_condition %in% available_conditions) {
 }
 
 
-# ============================================================
+
 # 6. GENERATE tx2gene MAPPING FROM THE GTF FILE
-# ============================================================
+
 
 message("Importing the GTF annotation file...")
 
@@ -343,9 +338,7 @@ write_tsv(
 )
 
 
-# ============================================================
 # 7. LOCATE SALMON quant.sf FILES
-# ============================================================
 
 # Expected structure:
 #
@@ -380,9 +373,9 @@ if (length(missing_quant_files) > 0) {
 }
 
 
-# ============================================================
+
 # 8. IMPORT SALMON FILES USING TXIMPORT
-# ============================================================
+
 
 message("Importing Salmon quantification files...")
 
@@ -408,9 +401,9 @@ message(
 )
 
 
-# ============================================================
+
 # 9. PREPARE METADATA FOR DESEQ2
-# ============================================================
+
 
 metadata <- as.data.frame(
   metadata
@@ -440,9 +433,8 @@ metadata[[condition_column]] <- factor(
 )
 
 
-# ============================================================
+
 # 10. CREATE DESEQ2 DATASET
-# ============================================================
 
 design_formula <- as.formula(
   paste(
@@ -459,9 +451,8 @@ dds <- DESeqDataSetFromTximport(
 )
 
 
-# ============================================================
+
 # 11. FILTER VERY LOW-COUNT GENES
-# ============================================================
 
 genes_before_filtering <- nrow(
   dds
@@ -494,9 +485,7 @@ message(
 )
 
 
-# ============================================================
 # 12. RUN DESEQ2
-# ============================================================
 
 # DESeq() performs:
 # 1. Size-factor estimation
@@ -510,9 +499,8 @@ dds <- DESeq(
 )
 
 
-# ============================================================
 # 13. EXTRACT DIFFERENTIAL-EXPRESSION RESULTS
-# ============================================================
+
 
 results_deseq2 <- results(
   dds,
@@ -534,9 +522,9 @@ results_deseq2 <- results_deseq2[
 ]
 
 
-# ============================================================
+
 # 14. CREATE COMPLETE RESULT TABLE
-# ============================================================
+
 
 all_results <- as.data.frame(
   results_deseq2
@@ -563,9 +551,9 @@ all_results <- as.data.frame(
   )
 
 
-# ============================================================
+
 # 15. SIGNIFICANT DIFFERENTIALLY EXPRESSED GENES
-# ============================================================
+
 
 significant_degs <- all_results |>
   filter(
@@ -575,9 +563,8 @@ significant_degs <- all_results |>
   )
 
 
-# ============================================================
+
 # 16. UPREGULATED GENES
-# ============================================================
 
 upregulated_genes <- significant_degs |>
   filter(
@@ -585,9 +572,9 @@ upregulated_genes <- significant_degs |>
   )
 
 
-# ============================================================
+
 # 17. DOWNREGULATED GENES
-# ============================================================
+
 
 downregulated_genes <- significant_degs |>
   filter(
@@ -595,9 +582,8 @@ downregulated_genes <- significant_degs |>
   )
 
 
-# ============================================================
+
 # 18. EXTRACT NORMALIZED COUNTS
-# ============================================================
 
 normalized_counts <- counts(
   dds,
@@ -609,9 +595,7 @@ normalized_counts <- counts(
   )
 
 
-# ============================================================
 # 19. CREATE ANALYSIS SUMMARY
-# ============================================================
 
 result_summary <- tibble(
   Category = c(
@@ -634,9 +618,8 @@ result_summary <- tibble(
 )
 
 
-# ============================================================
+
 # 20. EXPORT CSV RESULT FILES
-# ============================================================
 
 write_csv(
   all_results,
@@ -723,9 +706,9 @@ saveRDS(
 )
 
 
-# ============================================================
+
 # 22. SAVE SESSION INFORMATION
-# ============================================================
+
 
 capture.output(
   sessionInfo(),
@@ -736,13 +719,8 @@ capture.output(
 )
 
 
-# ============================================================
 # 23. FINAL SUMMARY
-# ============================================================
 
-message(
-  "\n============================================"
-)
 
 message(
   "DESeq2 analysis completed successfully."
@@ -770,9 +748,6 @@ message(
   output_folder
 )
 
-message(
-  "============================================\n"
-)
 
 
 print(
